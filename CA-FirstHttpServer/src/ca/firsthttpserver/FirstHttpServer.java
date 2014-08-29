@@ -129,38 +129,20 @@ public class FirstHttpServer {
             String filetype = s.substring(dot + 1, s.length());
             switch (filetype) {
                 case "jpg":
-                    contentType = "image";
-                    break;
                 case "gif":
-                    contentType = "image";
-                    break;
                 case "png":
-                    contentType = "image";
-                    break;
                 case "jpeg":
-                    contentType = "image";
-                    break;
                 case "bmp":
                     contentType = "image";
                     break;
                 case "pdf":
-                    contentType = "application";
-                    break;
                 case "zip":
                     contentType = "application";
                     break;
                 case "css":
-                    contentType = "text";
-                    break;
                 case "html":
-                    contentType = "text";
-                    break;
                 case "javascript":
-                    contentType = "text";
-                    break;
                 case "rtf":
-                    contentType = "text";
-                    break;
                 case "xml":
                     contentType = "text";
                     break;
