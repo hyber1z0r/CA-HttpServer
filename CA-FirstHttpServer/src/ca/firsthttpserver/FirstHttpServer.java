@@ -103,9 +103,10 @@ public class FirstHttpServer {
     static class RequestHandler3 implements HttpHandler {
 
         @Override
-
         public void handle(HttpExchange he) throws IOException {
-            File file = new File(contentFolder + "index.html");
+            String filepath = he.getRequestURI().toString();
+            String path = contentFolder + filepath.replaceAll("/pages", "");
+            File file = new File(path);
             byte[] bytesToSend = new byte[(int) file.length()];
             try {
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
@@ -113,18 +114,56 @@ public class FirstHttpServer {
             } catch (IOException ie) {
                 ie.printStackTrace();
             }
+            String contentType = getMime(filepath);
+            Headers h = he.getResponseHeaders();
+            h.add("Content-Type", contentType);
             he.sendResponseHeaders(200, bytesToSend.length);
             try (OutputStream os = he.getResponseBody()) {
                 os.write(bytesToSend, 0, bytesToSend.length);
             }
+        }
 
+        private String getMime(String s) {
+            String contentType = "";
+            int dot = s.indexOf(".");
+            String filetype = s.substring(dot + 1, s.length());
+            switch (filetype) {
+                case "jpg":
+                    contentType = "image";
+                    break;
+                case "gif":
+                    contentType = "image";
+                    break;
+                case "jpeg":
+                    contentType = "image";
+                    break;
+                case "bmp":
+                    contentType = "image";
+                    break;
+                case "pdf":
+                    contentType = "application";
+                    break;
+                case "css":
+                    contentType = "text";
+                    break;
+                case "html":
+                    contentType = "text";
+                    break;
+                case "javascript":
+                    contentType = "text";
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+            return contentType + "/" + filetype;
         }
     }
-     static class RequestHandler4 implements HttpHandler {
+
+    static class RequestHandler4 implements HttpHandler {
 
         @Override
         public void handle(HttpExchange he) throws IOException {
-            
+
             StringBuilder sb = new StringBuilder();
             String response = "";
             sb.append("<!DOCTYPE html>\n");
@@ -137,7 +176,7 @@ public class FirstHttpServer {
             sb.append("<p>Method is:  \n" + he.getRequestMethod());
             sb.append("<p>Get-Parameters:  \n" + he.getRequestURI().getQuery());
             Scanner scan = new Scanner(he.getRequestBody());
-            while(scan.hasNext()){
+            while (scan.hasNext()) {
                 sb.append("Request body, with Post-parameters: " + scan.nextLine());
                 sb.append("</br>");
             }
