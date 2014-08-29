@@ -124,7 +124,7 @@ public class FirstHttpServer {
         }
 
         private String getMime(String s) {
-            String contentType = "";
+            String contentType;
             int dot = s.indexOf(".");
             String filetype = s.substring(dot + 1, s.length());
             switch (filetype) {
@@ -132,6 +132,9 @@ public class FirstHttpServer {
                     contentType = "image";
                     break;
                 case "gif":
+                    contentType = "image";
+                    break;
+                case "png":
                     contentType = "image";
                     break;
                 case "jpeg":
@@ -143,6 +146,9 @@ public class FirstHttpServer {
                 case "pdf":
                     contentType = "application";
                     break;
+                case "zip":
+                    contentType = "application";
+                    break;
                 case "css":
                     contentType = "text";
                     break;
@@ -152,8 +158,14 @@ public class FirstHttpServer {
                 case "javascript":
                     contentType = "text";
                     break;
+                case "rtf":
+                    contentType = "text";
+                    break;
+                case "xml":
+                    contentType = "text";
+                    break;
                 default:
-                    throw new AssertionError();
+                    contentType = "text";
             }
             return contentType + "/" + filetype;
         }
@@ -165,7 +177,7 @@ public class FirstHttpServer {
         public void handle(HttpExchange he) throws IOException {
 
             StringBuilder sb = new StringBuilder();
-            String response = "";
+            String response;
             sb.append("<!DOCTYPE html>\n");
             sb.append("<html>\n");
             sb.append("<head>\n");
@@ -175,6 +187,7 @@ public class FirstHttpServer {
             sb.append("<body>\n");
             sb.append("<p>Method is:  \n" + he.getRequestMethod());
             sb.append("<p>Get-Parameters:  \n" + he.getRequestURI().getQuery());
+            sb.append("</br>");
             Scanner scan = new Scanner(he.getRequestBody());
             while (scan.hasNext()) {
                 sb.append("Request body, with Post-parameters: " + scan.nextLine());
