@@ -32,7 +32,7 @@ public class FirstHttpServer {
         HttpServer server = HttpServer.create(new InetSocketAddress(ip, port), 0);
         server.createContext("/welcome", new RequestHandler());
         server.createContext("/headers", new RequestHandler2());
-        server.createContext("/pages/", new RequestHandler3());
+        server.createContext("/pages", new RequestHandler3());
         server.setExecutor(null); // Use the default executor
         server.start();
         System.out.println("Server started, listening on port: " + port);
